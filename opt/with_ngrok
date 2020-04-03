@@ -7,6 +7,17 @@ if [ -n "$NGROK_API_TOKEN" ]; then
 fi
 
 # Start the tunnel
+if [ -f $PWD/ngrok_template.yml ]; then
+  rm -f $PWD/ngrok.yml $PWD/temp.yml
+  ( echo "cat << EOF > $PWD/ngrok.yml";
+    cat $PWD/ngrok_template.yml;
+    echo "";
+    echo "EOF";
+  ) >$PWD/temp.yml
+  . $PWD/temp.yml
+  cat $PWD/ngrok.yml
+fi
+
 if [ -f $PWD/ngrok.yml ]; then
     ngrok_cmd="ngrok start -config $PWD/ngrok.yml --all"
 else
@@ -16,6 +27,8 @@ fi
 echo "Starting ngrok with command \`${ngrok_cmd}\`"
 eval "$ngrok_cmd >/dev/null 2>&1 &"
 ngrok_pid=$!
+
+echo "HEROKU NGROK PID $ngrok_pid"
 
 export NGROK_PID=$ngrok_pid
 
