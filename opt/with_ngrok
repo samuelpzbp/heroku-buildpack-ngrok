@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-port=${AUX_PORT:-9090}
+port=${PORT}
 
-export AUX_PORT=${port}
+export ADDR=${port}
 
 if [ -n "$NGROK_API_TOKEN" ]; then
   NGROK_OPTS="${NGROK_OPTS} --authtoken ${NGROK_API_TOKEN}"
